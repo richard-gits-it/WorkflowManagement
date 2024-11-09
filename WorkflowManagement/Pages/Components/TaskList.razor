@@ -1,0 +1,39 @@
+﻿
+
+<h3>TaskList</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Assigned To</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var task in tasks)
+        {
+            <tr>
+                <td>@task.Title</td>
+                <td>@task.Status</td>
+                <td>@task.AssignedUser.Name</td>
+                <td>
+                    <button @onclick="() => EditTask(task.Id)">Edit</button>
+                    <button @onclick="() => DeleteTask(task.Id)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<Task> tasks;
+
+    protected override async Task OnInitializedAsync()
+    {
+        tasks = await DbContext.Tasks.Include(t => t.AssignedUser).ToListAsync();
+    }
+
+    private void EditTask(int id) { /* Navigation Logic */ }
+    private void DeleteTask(int id) { /* Delete Logic */ }
+}
